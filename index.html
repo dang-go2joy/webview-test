@@ -2,33 +2,110 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebView Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Responsive WebView Test</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .spacer { height: 80vh; background: #eee; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; }
-        input { width: 100%; padding: 15px; font-size: 18px; border: 2px solid #007bff; border-radius: 8px; }
-        .padding-bottom { height: 50vh; }
+        /* Thiết lập cơ bản */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.6;
+            background-color: #f4f7f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px; /* Giới hạn độ rộng trên PC để dễ nhìn */
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h2 { color: #007bff; margin-bottom: 20px; font-size: 1.5rem; text-align: center; }
+
+        .spacer { 
+            height: 70vh; /* Tạo khoảng trắng lớn để ép người dùng phải cuộn */
+            background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
+            margin-bottom: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px dashed #bbdefb;
+            border-radius: 8px;
+            color: #1976d2;
+            font-weight: bold;
+        }
+
+        .input-group {
+            margin-bottom: 40px;
+        }
+
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            font-size: 16px; /* Font 16px để iOS không tự động zoom màn hình */
+            border: 2px solid #ddd; 
+            border-radius: 8px; 
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input:focus { border-color: #007bff; background-color: #fff; }
+
+        .footer-note {
+            height: 40vh; /* Tạo không gian bên dưới để input có chỗ "bay" lên giữa màn hình */
+            text-align: center;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* Responsive cho màn hình nhỏ */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            h2 { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
-    <h2>Trình Test Cuộn Bàn Phím</h2>
-    <div class="spacer">Cuộn xuống dưới cùng</div>
-    
-    <div class="input-box">
-        <label>Nhập thử vào đây:</label><br><br>
-        <input type="text" id="target-input" placeholder="Chạm để hiện bàn phím...">
-    </div>
 
-    <div class="padding-bottom"></div>
+    <div class="container">
+        <h2>WebView Input Test</h2>
+        
+        <div class="spacer">
+            <p>↓ Cuộn xuống để tìm ô nhập liệu ↓</p>
+        </div>
+        
+        <div class="input-group">
+            <label for="target-input">Họ và tên của bạn:</label>
+            <input type="text" id="target-input" placeholder="Chạm vào đây để hiện bàn phím...">
+        </div>
+
+        <div class="footer-note">
+            <p>Khi focus, script sẽ đẩy ô này lên giữa màn hình.</p>
+        </div>
+    </div>
 
     <script>
         const input = document.getElementById('target-input');
-        input.addEventListener('focus', () => {
+        
+        // Hàm xử lý cuộn thông minh
+        const scrollToInput = () => {
             setTimeout(() => {
-                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
-        });
+                input.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' // Đẩy ô input vào chính giữa màn hình theo chiều dọc
+                });
+            }, 300); // Đợi bàn phím mở ra rồi mới cuộn
+        };
+
+        input.addEventListener('focus', scrollToInput);
     </script>
 </body>
 </html>
